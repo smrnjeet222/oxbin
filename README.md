@@ -1,12 +1,28 @@
 <div align="center">
 
-![OxBin Logo](./assets/logo.png)
+<img src="./assets/logo.png" alt="OxBin Logo" width="300" />
 
 </div>
 
 # OxBin - Walrus Pastebin CLI
 
-A beautiful terminal-based pastebin application built with [Bubble Tea](https://github.com/charmbracelet/bubbletea) that uses the [Walrus Protocol](https://www.walrus.xyz/) for decentralized file storage.
+A beautiful terminal-based pastebin application built with [Bubble Tea](https://github.com/charmbracelet/bubbletea) that uses the [Walrus Protocol](https://www.walrus.xyz/) for decentralized file storage and [Fluence Network](https://fluence.network/) for decentralized deployment.
+
+
+> 🤝 Built @ ETHGlobal Delhi 2025 with Decentralized Technologies
+
+<div align="center">
+
+<a href="https://www.walrus.xyz/" target="_blank">
+  <img src="https://ethglobal.storage/organizations/vsbye/logo/default" alt="Walrus Protocol" width="120" height="60" />
+</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://fluence.network/" target="_blank">
+  <img src="https://ethglobal.storage/organizations/b2u1b/logo/default" alt="Fluence Network" width="120" height="60" />
+</a>
+
+
+</div>
 
 ## ✨ Features
 
@@ -24,6 +40,14 @@ A beautiful terminal-based pastebin application built with [Bubble Tea](https://
 - 🎯 **Post-Upload Actions**: Multiple options after successful upload
 - 📋 **File Metadata**: Stores filename, extension, size, and upload time
 - 🔄 **Smart Retrieval**: Preserves original filenames and file information
+
+## 🛠️ Technology Stack
+
+- **Storage**: [Walrus Protocol](https://www.walrus.xyz/) - Decentralized storage on Sui blockchain
+- **Deployment**: [Fluence Network](https://fluence.network/) - Decentralized cloud infrastructure  
+- **Frontend**: [Bubble Tea](https://github.com/charmbracelet/bubbletea) - Terminal UI framework
+- **Language**: Go - High-performance systems programming
+- **Web UI**: Native Go HTTP server with Templ templates
 
 ## 🚀 Quick Start
 
@@ -102,41 +126,11 @@ which oxbin
 chmod +x oxbin
 ```
 
-**Network errors**
-```bash
-# Check internet connection
-curl -I https://publisher.walrus-testnet.walrus.space
-
-# Run with debug output
-oxbin --debug
-```
-
 **File upload fails**
 - Check file size (default limit: 10MB)
 - Verify file permissions
 - Try with a smaller file first
 
-### Getting Help
-
-- 📖 **Documentation**: Read this README and inline help
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/smrnjeet222/oxbin/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/smrnjeet222/oxbin/discussions)
-- 📧 **Contact**: [your-email@example.com](mailto:your-email@example.com)
-
-## ⚡ Pro Tips
-
-### Keyboard Shortcuts
-- **↑/↓ Arrow Keys**: Navigate menus
-- **Enter**: Select option
-- **Esc**: Go back/cancel
-- **Ctrl+C**: Exit application
-- **Tab**: Navigate form fields
-
-### Workflow Tips
-1. **Keep Blob IDs handy**: Save important Blob IDs in a text file
-2. **Use meaningful filenames**: They're preserved in metadata
-3. **Test with small files first**: Verify connectivity before large uploads
-4. **Bookmark the web interface**: For easy browser access to blobs
 
 ### File Metadata
 
@@ -221,37 +215,11 @@ The interface automatically adapts to your terminal size:
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss) - Terminal styling
 - [Walrus Go SDK](https://github.com/namihq/walrus-go) - Walrus Protocol integration
 
-## 🌐 About Walrus Protocol
-
-Walrus is a decentralized storage and data availability protocol built on Sui. It provides:
-- **Cost-effective storage** for large data blobs
-- **High availability** and fault tolerance
-- **Censorship resistance** through decentralization
-- **Integration** with the Sui blockchain ecosystem
-
-Learn more at [walrus.site](https://walrus.site)
-
-## 🔗 Endpoint Information
-
-OxBin automatically discovers endpoints from the official Walrus documentation. Current working endpoints include:
-
-### Testnet (Recommended for Development)
-- **Publisher**: `https://publisher.walrus-testnet.walrus.space`
-- **Aggregator**: `https://aggregator.walrus-testnet.walrus.space`
-
-### Mainnet (Production)
-- **Publisher**: `https://publisher.walrus-mainnet.walrus.space`
-- **Aggregator**: `https://aggregator.walrus-mainnet.walrus.space`
-
-For a complete list of available endpoints, see the [official documentation](https://docs.wal.app/usage/web-api.html).
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
-
-This project is open source and available under the MIT License.
 
 ## 🔗 Links
 

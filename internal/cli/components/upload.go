@@ -552,6 +552,10 @@ func (m UploadModel) renderConfirmUpload(containerWidth int) string {
 		s += fmt.Sprintf("Modified: %s\n\n", uploadInfoStyle.Render(info.ModTime().Format("2006-01-02 15:04:05")))
 	}
 
+	// Security disclaimer before confirmation
+	s += uploadWarningStyle.Render("⚠️  WARNING: Files uploaded to Walrus are PUBLICLY accessible!") + "\n"
+	s += uploadWarningStyle.Render("    Do NOT upload sensitive, private, or confidential files.") + "\n\n"
+	
 	s += uploadQuestionStyle.Render("Upload this file to Walrus? (y/N)") + "\n\n"
 	s += uploadHelpStyle.Render("Press Enter to upload, 'n' to cancel, Esc to go back")
 
@@ -854,6 +858,10 @@ var (
 				Foreground(lipgloss.Color("#f9b572"))
 
 	uploadHelpStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#8a8a8a")).
-			Italic(true)
+		Foreground(lipgloss.Color("#8a8a8a")).
+		Italic(true)
+
+	uploadWarningStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#ff6b6b")).
+		Bold(true)
 )

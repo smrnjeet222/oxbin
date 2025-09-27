@@ -64,6 +64,10 @@ func (m AboutModel) ViewWithSize(width, height int) string {
 	}
 	s += aboutFeatureStyle.Render("• 💾 Save retrieved files locally") + "\n\n"
 
+	s += aboutSectionStyle.Render("Security Notice:") + "\n"
+	s += aboutWarningStyle.Render("Files uploaded to Walrus are PUBLICLY accessible!") + "\n"
+	s += aboutWarningStyle.Render("Do NOT upload sensitive or private files.") + "\n\n"
+
 	s += aboutSectionStyle.Render("Current Configuration:") + "\n"
 
 	// Truncate URLs for small screens
@@ -138,6 +142,11 @@ var (
 			PaddingLeft(2)
 
 	aboutHelpStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#8a8a8a")).
-			Italic(true)
+		Foreground(lipgloss.Color("#8a8a8a")).
+		Italic(true)
+
+	aboutWarningStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#ff6b6b")).
+		Bold(true).
+		PaddingLeft(2)
 )
