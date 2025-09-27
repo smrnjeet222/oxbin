@@ -1,10 +1,8 @@
 <div align="center">
-
-<img src="./assets/logo.png" alt="OxBin Logo" width="300" />
-
+  <img src="./assets/logo.png" alt="OxBin Logo" width="300" />
 </div>
 
-# OxBin - Walrus Pastebin CLI
+# oxbin - onchain file sharing CLI
 
 A beautiful terminal-based pastebin application built with [Bubble Tea](https://github.com/charmbracelet/bubbletea) that uses the [Walrus Protocol](https://www.walrus.xyz/) for decentralized file storage and [Fluence Network](https://fluence.network/) for decentralized deployment.
 
@@ -27,7 +25,7 @@ A beautiful terminal-based pastebin application built with [Bubble Tea](https://
 ## ✨ Features
 
 - 📤 **Upload Files**: Store any file on the Walrus decentralized storage network
-- 📥 **Read Files**: Retrieve files using their Blob ID
+- 📖 **Read Files**: Retrieve files using their Blob ID
 - 🎨 **Beautiful TUI**: Intuitive terminal user interface built with Bubble Tea
 - 🔒 **Decentralized**: Powered by Walrus Protocol on Sui blockchain
 - 💾 **Save Locally**: Download retrieved files to your local system
@@ -48,6 +46,9 @@ A beautiful terminal-based pastebin application built with [Bubble Tea](https://
 - **Frontend**: [Bubble Tea](https://github.com/charmbracelet/bubbletea) - Terminal UI framework
 - **Language**: Go - High-performance systems programming
 - **Web UI**: Native Go HTTP server with Templ templates
+
+### Demo
+![Screen Recording 2025-09-28 at 01 20 35](https://github.com/user-attachments/assets/41dee240-3ff9-4f46-b749-e2b6297f820e)
 
 ## 🚀 Quick Start
 
@@ -89,8 +90,6 @@ go build -o bin/oxbin ./cmd/oxbin
 
 ## 🎯 Quick Usage
 
-### First Time Usage
-
 1. **Install OxBin** using any method above
 2. **Run the application**:
    ```bash
@@ -101,7 +100,7 @@ go build -o bin/oxbin ./cmd/oxbin
    - Choose a file from your system
    - Copy the generated Blob ID
 4. **Retrieve the file**:
-   - Select "📥 Read File"  
+   - Select "📖 Read File"  
    - Enter the Blob ID
    - View or save the file
 
@@ -147,7 +146,7 @@ OxBin automatically stores and preserves file metadata when uploading files:
 - Files are wrapped in a JSON structure with metadata before uploading to Walrus
 - Original file content is base64-encoded within the wrapper
 - When retrieving files, OxBin automatically detects and unwraps the metadata
-- Non-OxBin files (uploaded elsewhere) are displayed as raw content
+- non-oxbin files (uploaded elsewhere) are displayed as raw content
 
 #### Blob Format
 When you upload a file through OxBin, it's stored in this JSON format:
