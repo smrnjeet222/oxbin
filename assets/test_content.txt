@@ -1,0 +1,3 @@
+Hello, this is a test file for OxBin!
+This content should be visible when reading the blob.
+Testing line breaks and content display.
