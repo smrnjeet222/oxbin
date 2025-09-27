@@ -1,6 +1,12 @@
-# 🗂️ OxBin - Walrus Pastebin CLI
+<div align="center">
 
-A beautiful terminal-based pastebin application built with [Bubble Tea](https://github.com/charmbracelet/bubbletea) that uses the [Walrus Protocol](https://walrus.site) for decentralized file storage.
+![OxBin Logo](./assets/logo.png)
+
+</div>
+
+# OxBin - Walrus Pastebin CLI
+
+A beautiful terminal-based pastebin application built with [Bubble Tea](https://github.com/charmbracelet/bubbletea) that uses the [Walrus Protocol](https://www.walrus.xyz/) for decentralized file storage.
 
 ## ✨ Features
 
@@ -26,16 +32,111 @@ A beautiful terminal-based pastebin application built with [Bubble Tea](https://
 - Go 1.19 or later
 - Internet connection for accessing Walrus network
 
-### Installation
+## 📦 Installation Guide
 
-The project includes a comprehensive Makefile for easy development and building:
+### Option 1: Install using go
 
 ```bash
-# Build and run
-make run              # Build and run the application
-make build            # Build the application only
-make clean            # Clean build artifacts
+# Install latest version
+go install github.com/smrnjeet222/oxbin/cmd/oxbin@latest
+
+# Run from anywhere (make sure $GOPATH/bin is in your PATH)
+oxbin
 ```
+
+### Option 2: Build from Source
+
+#### Clone and Build
+
+```bash
+# Clone the repository
+git clone https://github.com/smrnjeet222/oxbin.git
+cd oxbin
+
+# Build using Make
+make build
+
+# Or build manually
+go build -o bin/oxbin ./cmd/oxbin
+
+# Run the application
+./bin/oxbin
+```
+
+## 🎯 Quick Usage
+
+### First Time Usage
+
+1. **Install OxBin** using any method above
+2. **Run the application**:
+   ```bash
+   oxbin
+   ```
+3. **Upload your first file**:
+   - Select "📤 Upload File"
+   - Choose a file from your system
+   - Copy the generated Blob ID
+4. **Retrieve the file**:
+   - Select "📥 Read File"  
+   - Enter the Blob ID
+   - View or save the file
+
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+**Command not found**
+```bash
+# Make sure the binary is in your PATH
+echo $PATH
+which oxbin
+
+# Or run from current directory
+./oxbin
+```
+
+**Permission denied**
+```bash
+# Make the binary executable
+chmod +x oxbin
+```
+
+**Network errors**
+```bash
+# Check internet connection
+curl -I https://publisher.walrus-testnet.walrus.space
+
+# Run with debug output
+oxbin --debug
+```
+
+**File upload fails**
+- Check file size (default limit: 10MB)
+- Verify file permissions
+- Try with a smaller file first
+
+### Getting Help
+
+- 📖 **Documentation**: Read this README and inline help
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/smrnjeet222/oxbin/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/smrnjeet222/oxbin/discussions)
+- 📧 **Contact**: [your-email@example.com](mailto:your-email@example.com)
+
+## ⚡ Pro Tips
+
+### Keyboard Shortcuts
+- **↑/↓ Arrow Keys**: Navigate menus
+- **Enter**: Select option
+- **Esc**: Go back/cancel
+- **Ctrl+C**: Exit application
+- **Tab**: Navigate form fields
+
+### Workflow Tips
+1. **Keep Blob IDs handy**: Save important Blob IDs in a text file
+2. **Use meaningful filenames**: They're preserved in metadata
+3. **Test with small files first**: Verify connectivity before large uploads
+4. **Bookmark the web interface**: For easy browser access to blobs
 
 ### File Metadata
 
@@ -98,27 +199,6 @@ OxBin uses hardcoded, reliable Walrus endpoints for optimal performance and simp
 - **Backup Aggregator**: `https://walrus-testnet-aggregator.staking4all.org`
 
 The application automatically uses backup endpoints if primary ones are unavailable.
-
-### Usage
-
-#### Basic Usage
-
-No configuration required! The app starts immediately with pre-configured endpoints.
-
-```bash
-# 1. Build the application
-make build
-
-# 2. Run the application
-make run
-
-# 3. In the CLI:
-#    - Select "Upload File"
-#    - Enter "test-file.txt"
-#    - Copy the Blob ID from the result
-#    - Go back to menu, select "Read File"
-#    - Enter the Blob ID to retrieve your file
-```
 
 ## 🔧 Advanced Features
 

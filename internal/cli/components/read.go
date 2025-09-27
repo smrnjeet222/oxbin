@@ -16,7 +16,8 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/jeet/oxbin/internal/core"
+	"github.com/smrnjeet222/oxbin/internal/core"
+	"github.com/smrnjeet222/oxbin/internal/utils"
 	walrus "github.com/namihq/walrus-go"
 )
 
@@ -138,6 +139,11 @@ func (m ReadModel) Update(msg tea.Msg) (ReadModel, tea.Cmd) {
 				}
 				return m, nil
 			}
+		case "b":
+			if m.step == displayContentStep {
+				// Open in browser using hosted WebUI
+				return m, m.openInBrowser()
+			}
 		case "r":
 			if m.step == displayContentStep {
 				// Refresh content
@@ -172,6 +178,14 @@ func (m ReadModel) Update(msg tea.Msg) (ReadModel, tea.Cmd) {
 
 	case saveErrorMsg:
 		// Stay in save step but show error
+		return m, nil
+
+	case browserOpenedMsg:
+		// Browser opened successfully, stay in display step
+		return m, nil
+
+	case browserErrorMsg:
+		// Browser opening failed, stay in display step
 		return m, nil
 
 	case spinner.TickMsg:
@@ -318,7 +332,7 @@ func (m ReadModel) renderDisplayContent(containerWidth int) string {
 	// Content viewport
 	s += m.viewport.View() + "\n\n"
 
-	s += readHelpStyle.Render("↑/↓ to scroll • 's' to save • 'r' to refresh • Esc to go back")
+	s += readHelpStyle.Render("↑/↓ to scroll • 's' to save • 'r' to refresh • 'b' to open in browser • Esc to go back")
 
 	return readContainerStyle.Width(containerWidth).Render(s)
 }
@@ -639,6 +653,17 @@ func (m ReadModel) saveToFile() tea.Cmd {
 	}
 }
 
+// Open blob in browser using hosted WebUI
+func (m ReadModel) openInBrowser() tea.Cmd {
+	return func() tea.Msg {
+		url := utils.GetWebUIURL(m.blobID)
+		if err := utils.OpenBrowser(url); err != nil {
+			return browserErrorMsg(fmt.Sprintf("Failed to open browser: %v", err))
+		}
+		return browserOpenedMsg(fmt.Sprintf("Opened %s in browser", url))
+	}
+}
+
 // Messages
 type fetchCompleteMsg struct {
 	rawContent   []byte
@@ -649,6 +674,8 @@ type fetchCompleteMsg struct {
 type fetchErrorMsg string
 type saveCompleteMsg string
 type saveErrorMsg string
+type browserOpenedMsg string
+type browserErrorMsg string
 
 // Read styles
 var (

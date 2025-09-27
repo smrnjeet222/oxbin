@@ -1,0 +1,210 @@
+package templates
+
+import "strings"
+
+// Button component with DaisyUI styling
+templ Button(variant string, class string, attrs templ.Attributes) {
+	if variant == "primary" || variant == "" {
+		<button 
+			class={ "btn btn-primary", class }
+			{ attrs... }
+		>
+			{ children... }
+		</button>
+	} else if variant == "secondary" {
+		<button 
+			class={ "btn btn-secondary", class }
+			{ attrs... }
+		>
+			{ children... }
+		</button>
+	} else if variant == "outline" {
+		<button 
+			class={ "btn btn-outline", class }
+			{ attrs... }
+		>
+			{ children... }
+		</button>
+	} else if variant == "ghost" {
+		<button 
+			class={ "btn btn-ghost", class }
+			{ attrs... }
+		>
+			{ children... }
+		</button>
+	} else if variant == "neutral" {
+		<button 
+			class={ "btn btn-neutral", class }
+			{ attrs... }
+		>
+			{ children... }
+		</button>
+	}
+}
+
+// Input component
+templ Input(inputType string, class string, attrs templ.Attributes) {
+	<input 
+		type={ inputType }
+		class={ "input input-bordered w-full", class }
+		{ attrs... }
+	/>
+}
+
+// Card component
+templ Card(class string) {
+	<div class={ "card bg-base-100 shadow-xl", class }>
+		{ children... }
+	</div>
+}
+
+templ CardHeader(class string) {
+	<div class={ "card-body", class }>
+		{ children... }
+	</div>
+}
+
+templ CardTitle(class string) {
+	<h2 class={ "card-title", class }>
+		{ children... }
+	</h2>
+}
+
+templ CardDescription(class string) {
+	<p class={ "text-base-content/70", class }>
+		{ children... }
+	</p>
+}
+
+templ CardContent(class string) {
+	<div class={ "card-body pt-0", class }>
+		{ children... }
+	</div>
+}
+
+// Badge component
+templ Badge(variant string, class string) {
+	if variant == "primary" || variant == "" {
+		<div class={ "badge badge-primary", class }>
+			{ children... }
+		</div>
+	} else if variant == "secondary" {
+		<div class={ "badge badge-secondary", class }>
+			{ children... }
+		</div>
+	} else if variant == "outline" {
+		<div class={ "badge badge-outline", class }>
+			{ children... }
+		</div>
+	} else if variant == "success" {
+		<div class={ "badge badge-success", class }>
+			{ children... }
+		</div>
+	} else if variant == "error" {
+		<div class={ "badge badge-error", class }>
+			{ children... }
+		</div>
+	} else if variant == "warning" {
+		<div class={ "badge badge-warning", class }>
+			{ children... }
+		</div>
+	} else if variant == "info" {
+		<div class={ "badge badge-info", class }>
+			{ children... }
+		</div>
+	}
+}
+
+// Alert component
+templ Alert(variant string, class string) {
+	if variant == "info" || variant == "" {
+		<div class={ "alert alert-info", class }>
+			{ children... }
+		</div>
+	} else if variant == "success" {
+		<div class={ "alert alert-success", class }>
+			{ children... }
+		</div>
+	} else if variant == "warning" {
+		<div class={ "alert alert-warning", class }>
+			{ children... }
+		</div>
+	} else if variant == "error" {
+		<div class={ "alert alert-error", class }>
+			{ children... }
+		</div>
+	}
+}
+
+// Code block component with syntax highlighting
+templ CodeBlock(language string, class string) {
+	<div class={ "mockup-code", class }>
+		if language != "" {
+			<pre><code class={ "language-" + language }>{ children... }</code></pre>
+		} else {
+			<pre><code>{ children... }</code></pre>
+		}
+	</div>
+}
+
+// Media display component for images, videos, etc.
+templ MediaDisplay(contentType string, blobID string, class string) {
+	<div class={ "flex justify-center items-center p-6", class }>
+		if strings.HasPrefix(contentType, "image/") {
+			if contentType == "image/svg+xml" {
+				<div class="w-full">
+					<iframe 
+						src={ "/api/blob/" + blobID }
+						class="w-full h-full min-h-[60vh] border rounded-lg"
+						title="SVG Content"
+					></iframe>
+				</div>
+			} else {
+				<img 
+					src={ "/api/blob/" + blobID }
+					alt="Image content"
+					class="max-w-full max-h-full rounded-lg shadow-lg object-contain"
+					style="max-height: 80vh;"
+					loading="lazy"
+				/>
+			}
+		} else if strings.HasPrefix(contentType, "video/") {
+			<video 
+				controls
+				class="max-w-full rounded-lg shadow-lg"
+				style="max-height: 70vh;"
+			>
+				<source src={ "/api/blob/" + blobID } type={ contentType }/>
+				Your browser does not support the video tag.
+			</video>
+		} else if strings.HasPrefix(contentType, "audio/") {
+			<div class="w-full max-w-2xl">
+				<audio 
+					controls
+					class="w-full"
+				>
+					<source src={ "/api/blob/" + blobID } type={ contentType }/>
+					Your browser does not support the audio tag.
+				</audio>
+			</div>
+		} else if contentType == "application/pdf" {
+			<div class="w-full h-full">
+				<iframe 
+					src={ "/api/blob/" + blobID }
+					class="w-full h-full min-h-[70vh] border rounded-lg"
+					title="PDF Content"
+				></iframe>
+			</div>
+		} else {
+			<div class="alert alert-info">
+				<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+				</svg>
+				<div>
+					<h3 class="font-bold">Media file detected</h3>
+					<div class="text-xs">{ contentType } - Use download button to view this file</div>
+				</div>
+			</div>
+		}
+	</div>
+}

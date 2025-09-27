@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/jeet/oxbin/internal/core"
+	"github.com/smrnjeet222/oxbin/internal/core"
 )
 
 // IsBinaryContent checks if content is binary (contains non-printable characters)

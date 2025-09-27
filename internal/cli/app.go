@@ -3,8 +3,8 @@ package cli
 import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/jeet/oxbin/internal/cli/components"
-	"github.com/jeet/oxbin/internal/core"
+	"github.com/smrnjeet222/oxbin/internal/cli/components"
+	"github.com/smrnjeet222/oxbin/internal/core"
 )
 
 // Application states
@@ -97,9 +97,9 @@ func (a *App) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 // View implements tea.Model
 func (a *App) View() string {
 	// Make header responsive to screen width
-	headerText := "🗂️  OxBin - Walrus Pastebin CLI"
+	headerText := "🗂️ OxBin - Walrus Pastebin CLI"
 	if a.width < 50 {
-		headerText = "🗂️  OxBin"
+		headerText = "🗂️ OxBin"
 	}
 
 	headerStyle := lipgloss.NewStyle().

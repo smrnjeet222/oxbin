@@ -1,12 +1,14 @@
-module github.com/jeet/oxbin
+module github.com/smrnjeet222/oxbin
 
 go 1.24.5
 
 require (
+	github.com/a-h/templ v0.3.943
 	github.com/atotto/clipboard v0.1.4
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
+	github.com/joho/godotenv v1.5.1
 	github.com/namihq/walrus-go v0.2.0
 )
 

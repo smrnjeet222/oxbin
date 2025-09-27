@@ -4,8 +4,8 @@ import (
 	"log"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/jeet/oxbin/internal/cli"
-	"github.com/jeet/oxbin/internal/core"
+	"github.com/smrnjeet222/oxbin/internal/cli"
+	"github.com/smrnjeet222/oxbin/internal/core"
 )
 
 func main() {

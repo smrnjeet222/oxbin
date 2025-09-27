@@ -6,9 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"runtime"
 	"sort"
 	"strings"
 	"time"
@@ -18,7 +16,8 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/jeet/oxbin/internal/core"
+	"github.com/smrnjeet222/oxbin/internal/core"
+	"github.com/smrnjeet222/oxbin/internal/utils"
 )
 
 // Constants for backward compatibility - these will be removed when fully migrated to service
@@ -384,8 +383,8 @@ func (m UploadModel) Update(msg tea.Msg) (UploadModel, tea.Cmd) {
 		m.step = uploadCompleteStep
 		m.blobID = string(msg)
 
-		// Generate public URL and WalrusScan URL
-		m.publicURL = fmt.Sprintf("%s/v1/blobs/%s", WALRUS_AGGREGATOR_URL, m.blobID)
+		// Generate public URL using hosted WebUI
+		m.publicURL = utils.GetWebUIURL(m.blobID)
 
 		// Determine network for WalrusScan
 		network := "testnet"
@@ -712,20 +711,7 @@ func (m UploadModel) handleAction() tea.Cmd {
 
 // Open URL in default browser
 func openURL(url string) error {
-	var cmd string
-	var args []string
-
-	switch runtime.GOOS {
-	case "windows":
-		cmd = "cmd"
-		args = []string{"/c", "start"}
-	case "darwin":
-		cmd = "open"
-	default: // "linux", "freebsd", "openbsd", "netbsd"
-		cmd = "xdg-open"
-	}
-	args = append(args, url)
-	return exec.Command(cmd, args...).Start()
+	return utils.OpenBrowser(url)
 }
 
 // Upload file command
