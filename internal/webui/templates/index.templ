@@ -1,58 +1,493 @@
 package templates
 
-templ Index() {
-	@Layout("OxBin - File Viewer") {
-		<div class="min-h-screen flex flex-col">
-			<!-- Main Content -->
-			<div class="flex-1 container mx-auto px-4 py-8">
-				<!-- Hero Section -->
-				<div class="hero min-h-[60vh]">
-					<div class="hero-content text-center">
-						<div class="max-w-lg">
-							<!-- Logo -->
-							<div class="mb-6">
-								<img src="/assets/logo.png" alt="OxBin Logo" class="mx-auto max-w-sm h-auto" />
-							</div>
-							<p class="text-xl mb-8 text-base-content/80">
-								Enter a blob ID to view or download files stored on Walrus
-							</p>
+templ Index(uploadLimit string) {
+	@Layout("OxBin - Walrus File Sharing") {
+		<div class="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-5 sm:px-6 lg:px-8">
+			<header class="flex items-center justify-between gap-4 py-4">
+				<a href="/" class="flex items-center gap-3">
+					<img src="/assets/icon.png" alt="OxBin" class="aspect-square h-10 w-10 rounded-none object-cover shadow-sm"/>
+					<div>
+						<p class="font-display text-xl font-bold tracking-tight text-ink">OxBin</p>
+						<p class="hidden text-xs font-bold uppercase tracking-[0.28em] text-lagoon/70 sm:block">Walrus powered</p>
+					</div>
+				</a>
+				<nav class="hidden items-center gap-1 rounded-2xl border border-sui/25 bg-white/58 p-1.5 text-sm font-extrabold text-ink/68 shadow-[0_12px_34px_rgba(34,50,72,0.08)] backdrop-blur-xl sm:flex">
+					<a class="flex items-center gap-2 rounded-xl px-3 py-2.5 transition hover:bg-white/75 hover:text-lagoon" href="#lookup">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"></path>
+						</svg>
+						Viewer
+					</a>
+					<a class="flex items-center gap-2 rounded-xl px-3 py-2.5 transition hover:bg-white/75 hover:text-lagoon" href="/history">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v5l3 2m6-3a9 9 0 1 1-3-6.7"></path>
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v5h-5"></path>
+						</svg>
+						History
+					</a>
+					<a class="flex items-center gap-2 rounded-xl px-3 py-2.5 transition hover:bg-white/75 hover:text-lagoon" href="#cli">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 8 4 4-4 4m6 0h4"></path>
+						</svg>
+						CLI
+					</a>
+					<a class="flex items-center gap-2 rounded-xl px-3 py-2.5 transition hover:bg-white/75 hover:text-lagoon" href="#github">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M12 .5a12 12 0 0 0-3.8 23.39c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.09 1.84 1.24 1.84 1.24 1.08 1.83 2.82 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.45 11.45 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.83.58A12 12 0 0 0 12 .5Z"></path>
+						</svg>
+						GitHub
+					</a>
+				</nav>
+			</header>
 
-							<!-- Blob ID Form -->
-							<form method="POST" class="space-y-6">
-								<div class="form-control w-full">
-									<label class="label">
-										<span class="label-text font-semibold text-lg">Blob ID</span>
-									</label>
-									@Input("text", "input-lg", templ.Attributes{
-										"name": "blob_id",
-										"placeholder": "Enter blob ID...",
-										"required": true,
-									})
-								</div>
-								<div class="form-control">
-									@Button("primary", "btn-lg w-full h-14", templ.Attributes{
-										"type": "submit",
-									}) {
-										<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+			<main class="flex-1">
+				<section class="grid gap-8 py-14 lg:grid-cols-[1.04fr_0.96fr] lg:items-stretch lg:py-20">
+					<div class="reveal-up relative flex flex-col h-full">
+						<div class="walrus-grid absolute -inset-8 -z-10 opacity-80"></div>
+						<div class="flex flex-col h-full">
+							<div class="mb-5 inline-flex items-center gap-2 rounded-xl border border-white/80 bg-white/70 px-4 py-2 text-sm font-extrabold text-lagoon shadow-sm backdrop-blur">
+								<span class="h-2.5 w-2.5 rounded-full bg-reef shadow-[0_0_20px_rgba(108,224,210,0.9)]"></span>
+								Public file drops on Sui's Walrus network
+							</div>
+							<h1 class="max-w-4xl font-display text-5xl font-bold leading-[0.95] tracking-tight text-ink sm:text-6xl lg:text-7xl">
+								Share files like tiny sea treasures.
+							</h1>
+							<p class="mt-6 max-w-2xl text-lg leading-8 text-ink/72 sm:text-xl">
+								OxBin turns any file into a Walrus blob you can view, copy, download, and share from a sweet pastel web app or the terminal you already love.
+							</p>
+							<div class="mt-5 flex max-w-2xl gap-3 rounded-xl border border-amber-300/50 bg-amber-100/55 p-4 text-sm font-bold leading-6 text-ink/72">
+								<svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4a2 2 0 0 0-3.46 0L3.34 16c-.77 1.33.2 3 1.73 3Z"></path>
+								</svg>
+								<span>Uploads currently use Walrus testnet. Blobs expire by storage epochs, and testnet can also be wiped during a reset or redeploy without warning. Treat OxBin uploads as temporary demos, not permanent storage.</span>
+							</div>
+
+							<div class="mt-auto pt-8 grid max-w-2xl grid-cols-3 gap-3">
+								<div class="soft-card rounded-xl p-4">
+									<div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-sui/25 text-lagoon">
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1M12 4v12m0-12L7 9m5-5 5 5"></path>
 										</svg>
-										<span class="text-lg font-semibold">View File</span>
-									}
+									</div>
+									<p class="text-2xl font-black text-lagoon">10MB</p>
+									<p class="text-sm font-bold text-ink/60">max upload</p>
 								</div>
-							</form>
+								<div class="soft-card rounded-xl p-4">
+									<div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-reef/25 text-lagoon">
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2m5-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+										</svg>
+									</div>
+									<p class="text-2xl font-black text-lagoon">1 epoch</p>
+									<p class="text-sm font-bold text-ink/60">Walrus storage</p>
+								</div>
+								<div class="soft-card rounded-xl p-4">
+									<div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-coral/20 text-coral">
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7Z"></path>
+										</svg>
+									</div>
+									<p class="text-2xl font-black text-lagoon">0 setup</p>
+									<p class="text-sm font-bold text-ink/60">paste and view</p>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
 
-			<!-- Footer - Sticky to bottom -->
-			<footer class="footer footer-center p-6 bg-base-300 text-base-content mt-auto">
-				<div>
-					<p class="font-semibold text-lg">Powered by <a href="https://www.walrus.xyz/" target="_blank" class="text-primary">Walrus</a></p>
-					<p class="text-base-content/70">Decentralized file storage made simple</p>
+					<div id="upload" class="glass-card reveal-up w-full rounded-2xl p-4 sm:p-5 lg:max-w-[34rem] lg:justify-self-end lg:p-5 flex flex-col" style="animation-delay: 120ms;">
+						<div class="mb-4 flex items-start justify-between gap-4">
+							<div>
+								<p class="text-sm font-extrabold uppercase tracking-[0.26em] text-coral">Web uploader</p>
+								<h2 class="mt-2 font-display text-3xl font-bold text-ink">Drop a file into Walrus</h2>
+							</div>
+							<div class="rounded-lg bg-sui/20 px-3 py-2 text-sm font-black text-lagoon">{ uploadLimit }</div>
+						</div>
+
+						<div class="mb-4 rounded-xl border border-coral/20 bg-coral/10 p-3 text-sm leading-6 text-ink/76">
+							<strong class="text-ink">Public file warning:</strong>
+							Files uploaded to Walrus can be publicly accessed by anyone with the blob ID. Do not upload secrets, private documents, credentials, or anything sensitive.
+						</div>
+
+						<form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data" class="space-y-3 flex-1 flex flex-col">
+							<label id="dropzone" for="file-input" class="group flex min-h-48 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-sui/70 bg-white/58 px-6 py-6 text-center transition hover:border-lagoon hover:bg-white/80 flex-1">
+								<input id="file-input" name="file" type="file" class="sr-only" required/>
+								<span class="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-sui via-reef to-coral text-3xl shadow-md">
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2Z"></path>
+									</svg>
+								</span>
+								<span id="file-label" class="text-xl font-black text-ink">Choose a file or drop it here</span>
+								<span class="mt-2 max-w-sm text-sm leading-6 text-ink/62">Images, PDFs, text files, archives, and tiny experiments are all welcome up to { uploadLimit }.</span>
+							</label>
+
+							<div id="upload-feedback" class="rounded-xl border border-sui/30 bg-white/62 p-3.5" role="status" aria-live="polite">
+								<div id="upload-feedback-content" class="flex flex-col justify-center">
+									<div class="flex items-center gap-3">
+										<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sui/25 text-lagoon">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"></path>
+											</svg>
+										</div>
+										<div>
+											<p class="text-xs font-extrabold uppercase tracking-[0.22em] text-lagoon">Ready</p>
+											<p class="mt-0.5 text-sm font-bold text-ink">Pick a file to start</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<button id="upload-button" type="submit" class="cute-button flex w-full items-center justify-center gap-3 rounded-xl bg-ink px-6 py-3.5 text-base font-extrabold text-white shadow-[0_14px_30px_rgba(34,50,72,0.18)]">
+								<span>Store on Walrus</span>
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7 5 5m0 0-5 5m5-5H6"></path>
+								</svg>
+							</button>
+							<noscript>
+								<p class="text-center text-sm font-bold text-ink/62">JavaScript is off, so upload will redirect to the blob viewer after Walrus stores the file.</p>
+							</noscript>
+						</form>
+					</div>
+				</section>
+
+				<section id="lookup" class="py-14 lg:py-20">
+					<div class="glass-card overflow-hidden rounded-2xl">
+						<div class="grid lg:grid-cols-[0.92fr_1.08fr]">
+							<div class="flex flex-col justify-between border-b border-sui/25 bg-white/48 p-6 sm:p-8 lg:border-b-0 lg:border-r">
+								<div>
+									<p class="text-sm font-extrabold uppercase tracking-[0.26em] text-coral">Workflow</p>
+									<h2 class="mt-3 max-w-xl font-display text-4xl font-bold leading-tight text-ink">One blob ID, every surface.</h2>
+									<p class="mt-4 max-w-xl text-base leading-7 text-ink/68">Upload from the browser or CLI, then use the same viewer URL for previews, downloads, raw content, and WalrusScan handoff.</p>
+								</div>
+
+								<div class="mt-8 space-y-3">
+									<div class="flex gap-4 rounded-xl border border-sui/25 bg-white/64 p-4">
+										<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-lagoon text-white">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14"></path>
+											</svg>
+										</div>
+										<div>
+											<h3 class="font-display text-xl font-bold text-ink">Upload once</h3>
+											<p class="mt-1 text-sm leading-6 text-ink/62">OxBin wraps file bytes with filename, type, size, and upload time metadata.</p>
+										</div>
+									</div>
+									<div class="flex gap-4 rounded-xl border border-sui/25 bg-white/64 p-4">
+										<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-reef text-ink">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 6.75 17.25 3m0 0H13.5m3.75 0v3.75M10.5 17.25 6.75 21m0 0h3.75M6.75 21v-3.75M17.25 17.25 21 21m0 0v-3.75M21 21h-3.75M6.75 6.75 3 3m0 0v3.75M3 3h3.75"></path>
+											</svg>
+										</div>
+										<div>
+											<h3 class="font-display text-xl font-bold text-ink">Share clean links</h3>
+											<p class="mt-1 text-sm leading-6 text-ink/62">Use the viewer, raw endpoint, download route, or WalrusScan link from the same blob ID.</p>
+										</div>
+									</div>
+									<div class="flex gap-4 rounded-xl border border-sui/25 bg-white/64 p-4">
+										<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-coral/70 text-white">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"></path>
+											</svg>
+										</div>
+										<div>
+											<h3 class="font-display text-xl font-bold text-ink">Preview immediately</h3>
+											<p class="mt-1 text-sm leading-6 text-ink/62">Inspect images, PDFs, video, audio, text, and binary files without leaving the browser.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="flex flex-col justify-between p-6 sm:p-8">
+								<div class="mb-8 flex flex-col gap-4">
+									<div>
+										<p class="text-sm font-extrabold uppercase tracking-[0.26em] text-lagoon">Blob viewer</p>
+										<h3 class="mt-3 max-w-xl font-display text-4xl font-bold leading-tight text-ink">Paste a blob ID.</h3>
+									</div>
+									<div class="flex flex-wrap gap-2 text-xs font-extrabold text-ink/68">
+										<span class="inline-flex items-center gap-1.5 rounded-full border border-sui/30 bg-sui/15 px-3 py-1.5">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+											</svg>
+											Previews
+										</span>
+										<span class="inline-flex items-center gap-1.5 rounded-full border border-sui/30 bg-sui/15 px-3 py-1.5">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0-4-4m4 4 4-4M5 20h14"></path>
+											</svg>
+											Downloads
+										</span>
+										<span class="inline-flex items-center gap-1.5 rounded-full border border-sui/30 bg-sui/15 px-3 py-1.5">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 9-4 3 4 3m8-6 4 3-4 3M14 5l-4 14"></path>
+											</svg>
+											Raw route
+										</span>
+									</div>
+								</div>
+
+								<form method="POST">
+									<label for="blob_id" class="block text-sm font-extrabold text-ink">Blob ID</label>
+									<textarea id="blob_id" name="blob_id" required placeholder="Paste blob ID..." class="mt-4 min-h-32 w-full resize-y rounded-xl border border-sui/40 bg-white/90 px-5 py-4 font-mono text-sm text-ink outline-none transition placeholder:text-ink/35 focus:border-lagoon focus:ring-4 focus:ring-sui/30"></textarea>
+									<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+										<button type="submit" class="cute-button flex flex-1 items-center justify-center rounded-xl bg-ink px-6 py-4 font-extrabold text-white shadow-[0_14px_30px_rgba(34,50,72,0.18)] hover:bg-lagoon">Open viewer</button>
+										<a href="/history" class="rounded-xl border border-sui/30 bg-white/70 px-5 py-4 text-center text-sm font-extrabold text-ink transition hover:text-lagoon">History</a>
+									</div>
+								</form>
+
+								<p class="mt-6 text-sm leading-6 text-ink/58">OxBin can read both OxBin metadata-wrapped blobs and raw Walrus blobs. Public testnet availability is temporary.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="cli" class="py-14 lg:py-20">
+					<div class="glass-card overflow-hidden rounded-2xl">
+						<div class="grid lg:grid-cols-[0.95fr_1.05fr]">
+							<div id="github" class="flex flex-col justify-between border-b border-sui/25 bg-white/50 p-6 sm:p-8 lg:border-b-0 lg:border-r">
+								<div>
+									<p class="text-sm font-extrabold uppercase tracking-[0.26em] text-coral">CLI + GitHub</p>
+									<h2 class="mt-3 max-w-xl font-display text-4xl font-bold leading-tight text-ink">A terminal-native uploader with a polished web viewer.</h2>
+									<p class="mt-4 max-w-xl text-base leading-7 text-ink/68">OxBin is a small Go project that pairs a Bubble Tea CLI with a templ-powered web UI. Upload from your shell, then hand off the same blob ID to the browser for previews and sharing.</p>
+								</div>
+
+								<div class="mt-8">
+									<div class="grid gap-3 sm:grid-cols-3">
+										<div class="rounded-xl border border-sui/25 bg-white/64 p-4">
+											<div class="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-coral/15 text-coral">
+												<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 8 4 4-4 4m6 0h4"></path>
+												</svg>
+											</div>
+											<p class="text-xs font-extrabold uppercase tracking-[0.18em] text-coral">CLI</p>
+											<p class="mt-2 text-sm font-black text-ink">Upload, read, save</p>
+										</div>
+										<div class="rounded-xl border border-sui/25 bg-white/64 p-4">
+											<div class="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-sui/20 text-lagoon">
+												<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 9-4 3 4 3m8-6 4 3-4 3M14 5l-4 14"></path>
+												</svg>
+											</div>
+											<p class="text-xs font-extrabold uppercase tracking-[0.18em] text-coral">Stack</p>
+											<p class="mt-2 text-sm font-black text-ink">Go + templ</p>
+										</div>
+										<div class="rounded-xl border border-sui/25 bg-white/64 p-4">
+											<div class="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-reef/25 text-lagoon">
+												<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0M4 12.5c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0M4 5.5c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"></path>
+												</svg>
+											</div>
+											<p class="text-xs font-extrabold uppercase tracking-[0.18em] text-coral">Storage</p>
+											<p class="mt-2 text-sm font-black text-ink">Walrus on Sui</p>
+										</div>
+									</div>
+									<div class="mt-5 flex flex-col gap-3 sm:flex-row">
+										<a href="https://github.com/smrnjeet222/oxbin" target="_blank" rel="noreferrer" class="cute-button inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-6 py-3 font-extrabold text-white">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+												<path d="M12 .5a12 12 0 0 0-3.8 23.39c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.09 1.84 1.24 1.84 1.24 1.08 1.83 2.82 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.45 11.45 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.83.58A12 12 0 0 0 12 .5Z"></path>
+											</svg>
+											View GitHub repo
+										</a>
+										<a href="https://docs.wal.app/usage/web-api.html" target="_blank" rel="noreferrer" class="cute-button inline-flex items-center justify-center gap-2 rounded-xl border border-sui/30 bg-white/70 px-6 py-3 font-extrabold text-ink">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-lagoon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.5c1.6-1.1 3.4-1.6 5.5-1.5.8 0 1.5.7 1.5 1.5v11.8c0 .9-.8 1.6-1.7 1.5-2-.2-3.8.2-5.3 1.2m0-14.5C10.4 5.4 8.6 4.9 6.5 5 5.7 5 5 5.7 5 6.5v11.8c0 .9.8 1.6 1.7 1.5 2-.2 3.8.2 5.3 1.2m0-14.5V21"></path>
+											</svg>
+											Walrus docs
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="bg-slate-950 text-slate-100">
+								<div class="flex items-center gap-2 border-b border-white/10 px-5 py-3">
+									<span class="h-2.5 w-2.5 rounded-full bg-coral"></span>
+									<span class="h-2.5 w-2.5 rounded-full bg-amber-300"></span>
+									<span class="h-2.5 w-2.5 rounded-full bg-reef"></span>
+									<span class="ml-3 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">CLI usage</span>
+								</div>
+								<div class="space-y-3 p-5 font-mono text-sm">
+									<div class="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+										<p class="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Install</p>
+										<div class="space-y-2 leading-6">
+											<p class="whitespace-pre-wrap break-words"><span class="text-slate-500"># install latest release</span></p>
+											<p class="whitespace-pre-wrap break-words"><span class="text-reef">$</span> <span class="text-coral">go</span> <span class="text-sui">install</span> <span class="text-amber-200">github.com/smrnjeet222/oxbin/cmd/oxbin@latest</span></p>
+										</div>
+									</div>
+									<div class="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+										<p class="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Launch</p>
+										<div class="space-y-2 leading-6">
+											<p class="whitespace-pre-wrap break-words"><span class="text-slate-500"># open the terminal UI</span></p>
+											<p class="whitespace-pre-wrap break-words"><span class="text-reef">$</span> <span class="text-coral">oxbin</span></p>
+										</div>
+									</div>
+									<div class="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+										<p class="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Build from source</p>
+										<div class="space-y-2 leading-6">
+											<p class="whitespace-pre-wrap break-words"><span class="text-slate-500"># clone and build locally</span></p>
+											<p class="whitespace-pre-wrap break-words"><span class="text-reef">$</span> <span class="text-coral">git</span> <span class="text-sui">clone</span> <span class="text-amber-200">https://github.com/smrnjeet222/oxbin.git</span></p>
+											<p class="whitespace-pre-wrap break-words"><span class="text-reef">$</span> <span class="text-coral">cd</span> <span class="text-amber-200">oxbin</span></p>
+											<p class="whitespace-pre-wrap break-words"><span class="text-reef">$</span> <span class="text-coral">make</span> <span class="text-sui">build</span></p>
+											<p class="whitespace-pre-wrap break-words"><span class="text-reef">$</span> <span class="text-coral">./bin/oxbin</span></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</main>
+
+			<footer class="flex flex-col gap-3 border-t border-white/70 py-6 text-sm font-bold text-ink/60 sm:flex-row sm:items-center sm:justify-between">
+				<p>OxBin makes Walrus blobs friendly for humans.</p>
+				<div class="flex gap-4">
+					<a href="https://walruscan.com/testnet" target="_blank" rel="noreferrer" class="text-lagoon hover:text-ink">WalrusScan</a>
+					<a href="https://sui.io" target="_blank" rel="noreferrer" class="text-lagoon hover:text-ink">Sui</a>
 				</div>
 			</footer>
 		</div>
+
+		<script>
+			(function() {
+				const form = document.getElementById('upload-form');
+				const input = document.getElementById('file-input');
+				const dropzone = document.getElementById('dropzone');
+				const label = document.getElementById('file-label');
+				const button = document.getElementById('upload-button');
+				const buttonText = button ? button.querySelector('span') : null;
+				const feedback = document.getElementById('upload-feedback');
+				const feedbackContent = document.getElementById('upload-feedback-content');
+				const storageKey = 'oxbin.uploadHistory.v1';
+
+				if (!form || !input || !dropzone) return;
+
+				function showStatus(message, isError) {
+					feedback.className = 'rounded-xl border p-3.5 ' + (isError ? 'border-coral/40 bg-coral/10' : 'border-sui/30 bg-white/62');
+					feedbackContent.innerHTML = `
+						<div class="flex items-center gap-3">
+							<div class="${isError ? 'bg-coral/20 text-coral' : 'bg-sui/25 text-lagoon'} flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+								${isError ? '!' : '<span class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>'}
+							</div>
+							<div>
+								<p class="text-xs font-extrabold uppercase tracking-[0.22em] ${isError ? 'text-coral' : 'text-lagoon'}">${isError ? 'Needs attention' : 'Uploading'}</p>
+								<p class="mt-0.5 text-sm font-bold text-ink">${message}</p>
+							</div>
+						</div>
+					`;
+				}
+
+				function renderResult(data) {
+					feedback.className = 'rounded-xl border border-reef/40 bg-reef/10 p-3.5';
+					feedbackContent.innerHTML = `
+						<div class="flex items-center gap-3">
+							<code class="break-all rounded-lg bg-white/72 p-2.5 font-mono text-xs text-ink/70 flex-1">${data.blob_id}</code>
+							<button type="button" class="copy-result shrink-0 rounded-lg bg-ink px-3 py-2.5 text-xs font-extrabold text-white transition hover:bg-lagoon" data-copy="${data.blob_id}">Copy</button>
+						</div>
+					`;
+				}
+
+				function saveUploadHistory(data) {
+					try {
+						const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
+						const uploads = Array.isArray(existing) ? existing : [];
+						const record = {
+							blobId: data.blob_id,
+							filename: data.filename,
+							size: data.size,
+							contentType: data.content_type,
+							uploadedAt: data.uploaded_at || new Date().toISOString(),
+							viewerUrl: data.viewer_url,
+							downloadUrl: data.download_url,
+							walrusScanUrl: data.walrus_scan_url,
+							publicUrl: data.public_url,
+						};
+						const deduped = uploads.filter((item) => item.blobId !== record.blobId);
+						localStorage.setItem(storageKey, JSON.stringify([record, ...deduped].slice(0, 30)));
+					} catch (error) {
+						// History is a convenience feature; upload success should not depend on localStorage.
+					}
+				}
+
+				input.addEventListener('change', function() {
+					if (input.files && input.files[0]) {
+						label.textContent = input.files[0].name;
+						button.dataset.viewerUrl = '';
+						if (buttonText) buttonText.textContent = 'Store on Walrus';
+					}
+				});
+
+				['dragenter', 'dragover'].forEach(function(eventName) {
+					dropzone.addEventListener(eventName, function(event) {
+						event.preventDefault();
+						dropzone.classList.add('dropzone-active');
+					});
+				});
+
+				['dragleave', 'drop'].forEach(function(eventName) {
+					dropzone.addEventListener(eventName, function(event) {
+						event.preventDefault();
+						dropzone.classList.remove('dropzone-active');
+					});
+				});
+
+				dropzone.addEventListener('drop', function(event) {
+					if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+						input.files = event.dataTransfer.files;
+						label.textContent = event.dataTransfer.files[0].name;
+					}
+				});
+
+				form.addEventListener('submit', async function(event) {
+					if (!window.fetch || !window.FormData) return;
+					event.preventDefault();
+
+					if (button.dataset.viewerUrl) {
+						window.location.href = button.dataset.viewerUrl;
+						return;
+					}
+
+					if (!input.files || !input.files[0]) {
+						showStatus('Choose a file before uploading.', true);
+						return;
+					}
+
+					button.disabled = true;
+					button.classList.add('opacity-70');
+					showStatus('Packing your file and sending it to Walrus...', false);
+
+					try {
+						const response = await fetch('/api/upload', {
+							method: 'POST',
+							headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+							body: new FormData(form)
+						});
+						const data = await response.json();
+						if (!response.ok || !data.success) {
+							throw new Error(data.error || 'Upload failed.');
+						}
+						saveUploadHistory(data);
+						showStatus('Upload complete. Save the blob ID so you can find this file later.', false);
+						renderResult(data);
+						button.dataset.viewerUrl = data.viewer_url;
+						if (buttonText) buttonText.textContent = 'Open in viewer';
+					} catch (error) {
+						showStatus(error.message || 'Upload failed. Please try again.', true);
+					} finally {
+						button.disabled = false;
+						button.classList.remove('opacity-70');
+					}
+				});
+
+				document.addEventListener('click', async function(event) {
+					const copyButton = event.target.closest('.copy-result');
+					if (!copyButton) return;
+					try {
+						await navigator.clipboard.writeText(copyButton.dataset.copy);
+						copyButton.textContent = 'Copied';
+					} catch (error) {
+						copyButton.textContent = 'Copy failed';
+					}
+				});
+			})();
+		</script>
 	}
 }

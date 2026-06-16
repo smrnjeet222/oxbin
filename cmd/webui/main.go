@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -14,8 +16,14 @@ import (
 	"github.com/smrnjeet222/oxbin/internal/webui/templates"
 )
 
+type blobService interface {
+	ReadFile(ctx context.Context, blobID string) (*core.ReadResponse, error)
+	UploadBytes(ctx context.Context, filename string, content []byte) (*core.UploadResponse, error)
+	MaxFileSize() int64
+}
+
 type WebServer struct {
-	service *core.Service
+	service blobService
 	port    string
 }
 
@@ -30,6 +38,20 @@ type PageData struct {
 	Error       string
 	ContentType string
 	Size        int64
+}
+
+type WebUploadResponse struct {
+	Success       bool   `json:"success"`
+	BlobID        string `json:"blob_id,omitempty"`
+	Filename      string `json:"filename,omitempty"`
+	Size          int64  `json:"size,omitempty"`
+	ContentType   string `json:"content_type,omitempty"`
+	UploadedAt    string `json:"uploaded_at,omitempty"`
+	ViewerURL     string `json:"viewer_url,omitempty"`
+	DownloadURL   string `json:"download_url,omitempty"`
+	WalrusScanURL string `json:"walrus_scan_url,omitempty"`
+	PublicURL     string `json:"public_url,omitempty"`
+	Error         string `json:"error,omitempty"`
 }
 
 func main() {
@@ -52,10 +74,13 @@ func main() {
 
 	// Setup routes
 	http.HandleFunc("/", server.handleHome)
+	http.HandleFunc("/history", server.handleHistory)
+	http.HandleFunc("/upload", server.handleUpload)
+	http.HandleFunc("/api/upload", server.handleUpload)
 	http.HandleFunc("/blob/", server.handleBlob)
 	http.HandleFunc("/api/blob/", server.handleAPIBlob)
 	http.HandleFunc("/download/", server.handleDownload)
-	
+
 	// Serve static assets
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets/"))))
 
@@ -77,10 +102,121 @@ func (ws *WebServer) handleHome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render the index page using Templ
-	component := templates.Index()
+	component := templates.Index(utils.FormatFileSize(ws.service.MaxFileSize()))
 	if err := component.Render(r.Context(), w); err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
 		log.Printf("Template error: %v", err)
+	}
+}
+
+func (ws *WebServer) handleHistory(w http.ResponseWriter, r *http.Request) {
+	component := templates.History()
+	if err := component.Render(r.Context(), w); err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+		log.Printf("Template error: %v", err)
+	}
+}
+
+func (ws *WebServer) handleUpload(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	maxFileSize := ws.service.MaxFileSize()
+	wantsJSON := r.URL.Path == "/api/upload" ||
+		strings.Contains(r.Header.Get("Accept"), "application/json") ||
+		r.Header.Get("X-Requested-With") == "XMLHttpRequest"
+
+	r.Body = http.MaxBytesReader(w, r.Body, maxFileSize+1024*1024)
+	if err := r.ParseMultipartForm(maxFileSize); err != nil {
+		ws.writeUploadError(w, wantsJSON, http.StatusRequestEntityTooLarge, fmt.Sprintf("Upload could not be read. Maximum file size is %s.", utils.FormatFileSize(maxFileSize)))
+		return
+	}
+
+	file, header, err := r.FormFile("file")
+	if err != nil {
+		ws.writeUploadError(w, wantsJSON, http.StatusBadRequest, "Choose a file before uploading.")
+		return
+	}
+	defer file.Close()
+
+	content, err := io.ReadAll(io.LimitReader(file, maxFileSize+1))
+	if err != nil {
+		ws.writeUploadError(w, wantsJSON, http.StatusBadRequest, "Failed to read uploaded file.")
+		return
+	}
+
+	if int64(len(content)) > maxFileSize {
+		ws.writeUploadError(w, wantsJSON, http.StatusRequestEntityTooLarge, fmt.Sprintf("File is too large. Maximum size is %s.", utils.FormatFileSize(maxFileSize)))
+		return
+	}
+
+	if len(content) == 0 {
+		ws.writeUploadError(w, wantsJSON, http.StatusBadRequest, "Empty files are not supported yet.")
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(r.Context(), 60*time.Second)
+	defer cancel()
+
+	response, err := ws.service.UploadBytes(ctx, header.Filename, content)
+	if err != nil {
+		ws.writeUploadError(w, wantsJSON, http.StatusInternalServerError, fmt.Sprintf("Upload failed: %v", err))
+		return
+	}
+
+	if response == nil || !response.Success {
+		message := "Upload failed. Please try again."
+		if response != nil && response.Error != "" {
+			message = response.Error
+		}
+		ws.writeUploadError(w, wantsJSON, http.StatusBadGateway, message)
+		return
+	}
+
+	viewerURL := "/blob/" + response.BlobID
+	if wantsJSON {
+		contentType := header.Header.Get("Content-Type")
+		if contentType == "" {
+			contentType = http.DetectContentType(content)
+		}
+
+		ws.writeJSON(w, http.StatusOK, WebUploadResponse{
+			Success:       true,
+			BlobID:        response.BlobID,
+			Filename:      header.Filename,
+			Size:          int64(len(content)),
+			ContentType:   contentType,
+			UploadedAt:    time.Now().UTC().Format(time.RFC3339),
+			ViewerURL:     viewerURL,
+			DownloadURL:   "/download/" + response.BlobID,
+			WalrusScanURL: response.WalrusScanURL,
+			PublicURL:     response.PublicURL,
+		})
+		return
+	}
+
+	http.Redirect(w, r, viewerURL, http.StatusSeeOther)
+}
+
+func (ws *WebServer) writeUploadError(w http.ResponseWriter, wantsJSON bool, status int, message string) {
+	if wantsJSON {
+		ws.writeJSON(w, status, WebUploadResponse{
+			Success: false,
+			Error:   message,
+		})
+		return
+	}
+
+	http.Error(w, message, status)
+}
+
+func (ws *WebServer) writeJSON(w http.ResponseWriter, status int, payload any) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	if err := json.NewEncoder(w).Encode(payload); err != nil {
+		log.Printf("JSON response error: %v", err)
 	}
 }
 

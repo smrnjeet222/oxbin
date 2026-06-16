@@ -104,6 +104,24 @@ go build -o bin/oxbin ./cmd/oxbin
    - Enter the Blob ID
    - View or save the file
 
+## 🌐 Web UI
+
+OxBin also ships with a browser UI for uploading, viewing, previewing, and downloading Walrus blobs.
+
+```bash
+# Generate templates and build the web server
+make webui
+
+# Run locally
+PORT=8080 ./bin/oxbin-webui
+```
+
+Open `http://localhost:8080` to upload a file directly from the web, or paste an existing blob ID to view it. Web uploads use the same OxBin metadata wrapper as the CLI, so filenames, file sizes, content types, and upload times are preserved.
+
+Files uploaded to Walrus are public to anyone with the blob ID. Do not upload secrets, credentials, private documents, or confidential files.
+
+For public deployments behind a proxy, keep the proxy body limit aligned with the app limit. OxBin currently enforces a default max upload size of 10MB.
+
 
 ## 🆘 Troubleshooting
 

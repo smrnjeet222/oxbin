@@ -19,130 +19,196 @@ type BlobData struct {
 
 templ Blob(data BlobData) {
 	@Layout("OxBin - Blob Viewer") {
-		<div class="container mx-auto px-4 py-4 min-h-screen flex flex-col">
-			<!-- Navigation -->
-			<div class="breadcrumbs text-sm mb-4">
-				<ul>
-					<li><a href="/" class="link link-primary">Home</a></li>
-					<li>Blob Viewer</li>
-				</ul>
-			</div>
-
-			if data.Error != "" {
-				<!-- Error State -->
-				<div class="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
-					@Alert("error", "max-w-2xl") {
-						<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-						</svg>
-						<div>
-							<h3 class="font-bold">Failed to load blob</h3>
-							<div class="text-xs">{ data.Error }</div>
-						</div>
-					}
-
-					@Button("primary", "btn-lg", templ.Attributes{
-						"onclick": "window.location.href='/'",
-					}) {
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-						</svg>
-						Try Another Blob
+		<div class="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-5 sm:px-6 lg:px-8">
+			<header class="mb-6 flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+				<a href="/" class="flex items-center gap-3">
+					<img src="/assets/icon.png" alt="OxBin" class="aspect-square h-10 w-10 rounded-none object-cover shadow-sm"/>
+					<div>
+						<p class="font-display text-xl font-bold tracking-tight text-ink">OxBin</p>
+						<p class="text-xs font-bold uppercase tracking-[0.28em] text-lagoon/70">Blob viewer</p>
+					</div>
+				</a>
+				<div class="flex flex-wrap gap-2">
+					<a href="/" class="cute-button rounded-xl border border-white/80 bg-white/70 px-4 py-2 text-sm font-extrabold text-ink shadow-sm">Upload</a>
+					if data.Error == "" {
+						<a href={ "/download/" + data.BlobID } class="cute-button rounded-xl bg-ink px-4 py-2 text-sm font-extrabold text-white shadow-sm">Download</a>
 					}
 				</div>
-			} else {
-				<!-- Success State -->
-				<div class="flex flex-col flex-1 space-y-4">
-					<!-- Compact File Information Bar -->
-					<div class="bg-base-100 rounded-lg p-4 shadow-sm">
-						<div class="flex flex-wrap items-center justify-between gap-4">
-							<!-- Left side: File info -->
-							<div class="flex flex-wrap items-center gap-4 min-w-0 flex-1">
-								<!-- Filename and size -->
-								if data.IsOxBinFile && data.Metadata != nil {
-									<div class="flex items-center gap-2 min-w-0">
-										<span class="text-sm font-medium truncate">{ data.Metadata.Filename }</span>
-										<span class="text-xs text-base-content/60">({ utils.FormatFileSize(data.Metadata.Size) })</span>
-									</div>
-								} else {
-									<div class="flex items-center gap-2">
-										<span class="text-sm text-base-content/60">{ utils.FormatFileSize(data.Size) }</span>
-									</div>
-								}
-
-								<!-- Content type -->
-								if data.ContentType != "" {
-									<span class="text-xs px-2 py-1 bg-base-200 rounded">{ data.ContentType }</span>
-								}
-
-								<!-- File type badge -->
-								if data.IsOxBinFile {
-									<span class="text-xs px-2 py-1 bg-base-200 rounded">🦋 OxBin Format</span>
-								} else {
-									<span class="text-xs px-2 py-1 bg-base-200 rounded">📦 Raw File</span>
-								}
-							</div>
-
-							<!-- Right side: OxBin badge and Actions -->
-							<div class="flex items-center gap-3">
-
-								<!-- Download button -->
-								@Button("primary", "btn-sm", templ.Attributes{
-									"onclick": "window.open('/download/" + data.BlobID + "', '_blank')",
-								}) {
-									<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-									</svg>
-									Download
-								}
-							</div>
+			</header>
+			if data.Error != "" {
+				<div class="flex flex-1 items-center justify-center py-16">
+					<div class="glass-card max-w-2xl rounded-2xl p-8 text-center">
+						<div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-coral/20 text-coral">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4a2 2 0 0 0-3.46 0L3.34 16c-.77 1.33.2 3 1.73 3Z"></path>
+							</svg>
 						</div>
-
-						<!-- Blob ID (collapsible/hidden by default) -->
-						<div class="mt-2 pt-2 border-t border-base-300">
-							<div class="flex items-center gap-2">
-								<span class="text-xs text-base-content/60">ID:</span>
-								<code class="text-xs font-mono text-base-content/80 truncate flex-1">{ data.BlobID }</code>
-							</div>
+						<h1 class="font-display text-4xl font-bold text-ink">This blob slipped away</h1>
+						<p class="mt-3 text-ink/68">We could not load that Walrus blob. Check the ID and try again.</p>
+						<div class="mt-5 rounded-xl border border-coral/30 bg-coral/10 p-4 text-left text-sm text-ink/70">
+							{ data.Error }
 						</div>
+						<a href="/" class="cute-button mt-6 inline-flex rounded-xl bg-ink px-6 py-3 font-extrabold text-white">Try another blob</a>
 					</div>
+				</div>
+			} else {
+				<main class="grid flex-1 gap-6 lg:grid-cols-[minmax(20rem,25rem)_minmax(0,1fr)]">
+					<aside class="min-w-0 space-y-5 lg:min-w-[20rem]">
+						<section class="glass-card rounded-2xl p-6">
+							<p class="text-sm font-extrabold uppercase tracking-[0.26em] text-coral">Stored on Walrus</p>
+							if data.IsOxBinFile && data.Metadata != nil {
+								<h1 class="mt-3 break-words font-display text-3xl font-bold leading-tight text-ink">{ data.Metadata.Filename }</h1>
+							} else {
+								<h1 class="mt-3 font-display text-3xl font-bold leading-tight text-ink">Raw Walrus blob</h1>
+							}
+							<p class="mt-3 text-sm leading-6 text-ink/66">Keep the blob ID safe. Anyone with it can access this public file.</p>
+							<div class="mt-4 rounded-xl border border-sui/30 bg-white/70 p-3">
+								<div class="mb-1.5 flex items-center justify-between gap-2">
+									<p class="text-[0.68rem] font-extrabold uppercase tracking-[0.2em] text-lagoon">Blob ID</p>
+									<button type="button" data-copy={ data.BlobID } data-copy-feedback="icon" aria-label="Copy blob ID" title="Copy blob ID" class="copy-button rounded p-1 text-ink/70 transition hover:bg-sui/15 hover:text-lagoon">
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2m-6 12h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2Z"></path>
+										</svg>
+									</button>
+								</div>
+								<code class="block whitespace-nowrap font-mono text-[0.68rem] leading-5 text-ink/76">{ data.BlobID }</code>
+							</div>
+						</section>
 
-					<!-- Content Preview - Full Focus -->
-					<div class="flex-1">
+						<section class="soft-card rounded-2xl p-5">
+							<h2 class="font-display text-xl font-bold text-ink">Actions</h2>
+							<div class="mt-4 grid gap-2">
+								<a href={ "/download/" + data.BlobID } class="cute-button rounded-xl bg-ink px-5 py-3 text-center text-sm font-extrabold text-white">Download file</a>
+								<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+									<a href={ "/api/blob/" + data.BlobID } target="_blank" rel="noreferrer" class="cute-button rounded-xl border border-sui/30 bg-white/70 px-5 py-3 text-center text-sm font-extrabold text-ink">Open raw</a>
+									<button type="button" data-copy={ "/blob/" + data.BlobID } data-copy-origin="true" class="copy-button cute-button rounded-xl border border-sui/30 bg-white/70 px-5 py-3 text-sm font-extrabold text-ink">Copy viewer link</button>
+								</div>
+								<a href={ "https://walruscan.com/testnet/blob/" + data.BlobID } target="_blank" rel="noreferrer" class="cute-button rounded-xl border border-sui/40 bg-sui/15 px-5 py-3 text-center text-sm font-extrabold text-ink">View on WalrusScan</a>
+							</div>
+						</section>
+
+						<section class="soft-card rounded-2xl p-5">
+							<h2 class="font-display text-xl font-bold text-ink">File details</h2>
+							<div class="mt-4 divide-y divide-sui/20 overflow-hidden rounded-xl border border-sui/20 bg-white/58 text-sm">
+								<div class="flex items-center justify-between gap-4 px-4 py-3">
+									<span class="font-bold text-ink/55">Size</span>
+									if data.IsOxBinFile && data.Metadata != nil {
+										<span class="font-black text-ink">{ utils.FormatFileSize(data.Metadata.Size) }</span>
+									} else {
+										<span class="font-black text-ink">{ utils.FormatFileSize(data.Size) }</span>
+									}
+								</div>
+								<div class="flex items-center justify-between gap-4 px-4 py-3">
+									<span class="font-bold text-ink/55">Type</span>
+									<span class="break-all text-right font-black text-ink">{ data.ContentType }</span>
+								</div>
+								if data.IsOxBinFile && data.Metadata != nil {
+									<div class="flex items-center justify-between gap-4 px-4 py-3">
+										<span class="font-bold text-ink/55">Uploaded</span>
+										<span class="text-right font-black text-ink">{ data.Metadata.UploadTime.Format("Jan 2, 2006 15:04 UTC") }</span>
+									</div>
+									<div class="flex items-center justify-between gap-4 px-4 py-3">
+										<span class="font-bold text-ink/55">Format</span>
+										<span class="font-black text-ink">OxBin metadata</span>
+									</div>
+								} else {
+									<div class="flex items-center justify-between gap-4 px-4 py-3">
+										<span class="font-bold text-ink/55">Format</span>
+										<span class="font-black text-ink">Raw blob</span>
+									</div>
+								}
+							</div>
+						</section>
+
+					</aside>
+
+					<section class="glass-card min-w-0 rounded-2xl p-4 sm:p-5">
+						<div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+							<div>
+								<p class="text-sm font-extrabold uppercase tracking-[0.26em] text-lagoon">Preview</p>
+								<h2 class="font-display text-3xl font-bold text-ink">
+									if data.IsMedia {
+										Media preview
+									} else if data.IsBinary {
+										Binary preview
+									} else {
+										Text preview
+									}
+								</h2>
+							</div>
+							<div class="flex flex-wrap gap-2">
+								if data.IsOxBinFile {
+									@Badge("success", "") {
+										OxBin file
+									}
+								} else {
+									@Badge("outline", "") {
+										Raw blob
+									}
+								}
+								if data.Language != "" {
+									@Badge("info", "") {
+										{ data.Language }
+									}
+								}
+							</div>
+						</div>
 						if data.IsBinary && !data.IsMedia {
-							<div class="mb-3">
-								@Alert("warning", "alert-sm") {
-									<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-4 w-4" fill="none" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+							<div class="mb-4">
+								@Alert("warning", "flex items-start gap-3 text-sm") {
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4a2 2 0 0 0-3.46 0L3.34 16c-.77 1.33.2 3 1.73 3Z"></path>
 									</svg>
-									<span class="text-sm">Binary file - showing hex preview</span>
+									<span>Binary file detected. Showing a hex preview so the page stays fast and readable.</span>
 								}
 							</div>
 						}
+						if data.IsMedia {
+							@MediaDisplay(data.ContentType, data.BlobID, "min-h-[68vh]")
+						} else {
+							<div class="overflow-hidden rounded-xl border border-sui/30 bg-slate-950 shadow-inner">
+								<pre class="max-h-[76vh] overflow-auto p-5 text-sm leading-7 text-slate-100"><code class={ "language-" + data.Language }>{ data.Content }</code></pre>
+							</div>
+						}
+					</section>
+				</main>
+				<script>
+					document.addEventListener('DOMContentLoaded', function() {
+						if (typeof Prism !== 'undefined') {
+							Prism.highlightAll();
+						}
 
-						<!-- Content Display -->
-						<div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
-							if data.IsMedia {
-								@MediaDisplay(data.ContentType, data.BlobID, "min-h-[60vh]")
-							} else {
-								<div>
-									<pre class="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap overflow-auto max-h-[80vh]"><code class={ "language-" + data.Language }>{ data.Content }</code></pre>
-								</div>
+						document.addEventListener('click', async function(event) {
+							const button = event.target.closest('.copy-button');
+							if (!button) return;
+
+							let value = button.dataset.copy || '';
+							if (button.dataset.copyOrigin === 'true') {
+								value = window.location.origin + value;
 							}
-						</div>
-					</div>
-				</div>
+
+							try {
+								await navigator.clipboard.writeText(value);
+								if (button.dataset.copyFeedback === 'icon') {
+									const original = button.innerHTML;
+									button.innerHTML = '<span class="block h-4 w-4 text-center text-sm font-black leading-4">✓</span>';
+									setTimeout(function() {
+										button.innerHTML = original;
+									}, 1200);
+								} else {
+									button.textContent = 'Copied';
+								}
+							} catch (error) {
+								if (button.dataset.copyFeedback === 'icon') {
+									button.innerHTML = '<span class="block h-4 w-4 text-center text-sm font-black leading-4">!</span>';
+								} else {
+									button.textContent = 'Copy failed';
+								}
+							}
+						});
+					});
+				</script>
 			}
 		</div>
-
-		<!-- JavaScript for syntax highlighting -->
-		<script>
-			// Initialize syntax highlighting when page loads
-			document.addEventListener('DOMContentLoaded', function() {
-				if (typeof Prism !== 'undefined') {
-					Prism.highlightAll();
-				}
-			});
-		</script>
 	}
 }

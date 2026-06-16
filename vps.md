@@ -57,7 +57,7 @@ ssh fluence "mkdir -p /home/ubuntu/oxbin/{bin,logs}"
 scp bin/oxbin-webui-linux fluence:/home/ubuntu/oxbin/bin/
 
 # Rename and set executable permissions
-ssh fluence "cd /home/ubuntu/oxbin && mv bin/oxbin-webui-linux oxbin-webui && chmod +x oxbin-webui"
+ssh fluence "cd /home/ubuntu/oxbin/bin && mv bin/oxbin-webui-linux oxbin-webui && chmod +x oxbin-webui"
 ```
 
 ## 3. Create Systemd Service
@@ -73,13 +73,13 @@ After=network.target
 Type=simple
 User=ubuntu
 Group=ubuntu
-WorkingDirectory=/home/ubuntu/oxbin
-ExecStart=/home/ubuntu/oxbin/oxbin-webui
+WorkingDirectory=/home/ubuntu/oxbin/
+ExecStart=/home/ubuntu/oxbin/bin/oxbin-webui
 Restart=always
 RestartSec=5
 StandardOutput=journal
 StandardError=journal
-Environment=PORT=8080
+Environment=PORT=39293
 
 [Install]
 WantedBy=multi-user.target
@@ -135,7 +135,7 @@ sudo tee /etc/nginx/sites-available/oxbin > /dev/null << 'EOF'
 server {
     listen 80;
     listen [::]:80;
-    
+
     server_name oxbin.jeet22.xyz;
 
     # Security headers
@@ -147,7 +147,7 @@ server {
 
     # Proxy settings
     location / {
-        proxy_pass http://127.0.0.1:8080;
+        proxy_pass http://127.0.0.1:39293;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';

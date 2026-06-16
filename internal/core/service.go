@@ -42,7 +42,6 @@ func NewService(config *Config) (*Service, error) {
 
 // UploadFile uploads a file to Walrus with metadata
 func (s *Service) UploadFile(ctx context.Context, filePath string) (*UploadResponse, error) {
-	// Check file size
 	fileInfo, err := os.Stat(filePath)
 	if err != nil {
 		return &UploadResponse{
@@ -51,14 +50,13 @@ func (s *Service) UploadFile(ctx context.Context, filePath string) (*UploadRespo
 		}, nil
 	}
 
-	if fileInfo.Size() > s.config.Walrus.MaxFileSize {
+	if fileInfo.IsDir() {
 		return &UploadResponse{
 			Success: false,
-			Error:   fmt.Sprintf("File too large. Maximum size is %d bytes", s.config.Walrus.MaxFileSize),
+			Error:   "Cannot upload a directory",
 		}, nil
 	}
 
-	// Read file content
 	content, err := os.ReadFile(filePath)
 	if err != nil {
 		return &UploadResponse{
@@ -67,8 +65,33 @@ func (s *Service) UploadFile(ctx context.Context, filePath string) (*UploadRespo
 		}, nil
 	}
 
-	// Create metadata
-	metadata := s.createFileMetadata(filePath, fileInfo)
+	return s.uploadContent(ctx, filepath.Base(filePath), content, fileInfo.Size())
+}
+
+// UploadBytes uploads in-memory file content to Walrus with metadata.
+func (s *Service) UploadBytes(ctx context.Context, filename string, content []byte) (*UploadResponse, error) {
+	return s.uploadContent(ctx, filename, content, int64(len(content)))
+}
+
+// MaxFileSize returns the configured upload limit in bytes.
+func (s *Service) MaxFileSize() int64 {
+	return s.config.Walrus.MaxFileSize
+}
+
+func (s *Service) uploadContent(ctx context.Context, filename string, content []byte, size int64) (*UploadResponse, error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
+	if size > s.config.Walrus.MaxFileSize {
+		return &UploadResponse{
+			Success: false,
+			Error:   fmt.Sprintf("File too large. Maximum size is %d bytes", s.config.Walrus.MaxFileSize),
+		}, nil
+	}
+
+	filename = sanitizeFilename(filename)
+	metadata := s.createFileMetadata(filename, size, content)
 
 	// Wrap content with metadata
 	wrappedData, err := s.wrapFileWithMetadata(content, metadata)
@@ -77,6 +100,15 @@ func (s *Service) UploadFile(ctx context.Context, filePath string) (*UploadRespo
 			Success: false,
 			Error:   fmt.Sprintf("Failed to wrap file: %v", err),
 		}, nil
+	}
+
+	select {
+	case <-ctx.Done():
+		return &UploadResponse{
+			Success: false,
+			Error:   fmt.Sprintf("Upload cancelled: %v", ctx.Err()),
+		}, nil
+	default:
 	}
 
 	// Upload to Walrus
@@ -88,6 +120,15 @@ func (s *Service) UploadFile(ctx context.Context, filePath string) (*UploadRespo
 			Success: false,
 			Error:   fmt.Sprintf("Failed to upload to Walrus: %v", err),
 		}, nil
+	}
+
+	select {
+	case <-ctx.Done():
+		return &UploadResponse{
+			Success: false,
+			Error:   fmt.Sprintf("Upload cancelled: %v", ctx.Err()),
+		}, nil
+	default:
 	}
 
 	if resp == nil {
@@ -158,15 +199,26 @@ func (s *Service) ReadFile(ctx context.Context, blobID string) (*ReadResponse, e
 
 // Helper methods
 
-func (s *Service) createFileMetadata(filePath string, fileInfo os.FileInfo) FileMetadata {
-	filename := filepath.Base(filePath)
+func sanitizeFilename(filename string) string {
+	filename = strings.TrimSpace(strings.ReplaceAll(filename, "\\", "/"))
+	filename = filepath.Base(filename)
+	if filename == "." || filename == "/" || filename == "" {
+		return "oxbin-upload.bin"
+	}
+	return filename
+}
+
+func (s *Service) createFileMetadata(filename string, size int64, content []byte) FileMetadata {
 	extension := filepath.Ext(filename)
 	contentType := s.getContentType(extension)
+	if contentType == "application/octet-stream" && len(content) > 0 {
+		contentType = http.DetectContentType(content)
+	}
 
 	return FileMetadata{
 		Filename:    filename,
 		Extension:   extension,
-		Size:        fileInfo.Size(),
+		Size:        size,
 		ContentType: contentType,
 		UploadTime:  time.Now(),
 		Version:     "1.0",

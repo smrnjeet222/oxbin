@@ -33,7 +33,7 @@ func Button(variant string, class string, attrs templ.Attributes) templ.Componen
 		}
 		ctx = templ.ClearChildren(ctx)
 		if variant == "primary" || variant == "" {
-			var templ_7745c5c3_Var2 = []any{"btn btn-primary", class}
+			var templ_7745c5c3_Var2 = []any{"cute-button inline-flex items-center justify-center rounded-xl bg-ink px-5 py-3 font-extrabold text-white shadow-[0_14px_30px_rgba(34,50,72,0.16)] disabled:cursor-not-allowed disabled:opacity-60", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -72,7 +72,7 @@ func Button(variant string, class string, attrs templ.Attributes) templ.Componen
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "secondary" {
-			var templ_7745c5c3_Var4 = []any{"btn btn-secondary", class}
+			var templ_7745c5c3_Var4 = []any{"cute-button inline-flex items-center justify-center rounded-xl bg-lagoon px-5 py-3 font-extrabold text-white shadow-[0_14px_30px_rgba(69,102,214,0.14)] disabled:cursor-not-allowed disabled:opacity-60", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -111,7 +111,7 @@ func Button(variant string, class string, attrs templ.Attributes) templ.Componen
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "outline" {
-			var templ_7745c5c3_Var6 = []any{"btn btn-outline", class}
+			var templ_7745c5c3_Var6 = []any{"cute-button inline-flex items-center justify-center rounded-xl border border-white/80 bg-white/70 px-5 py-3 font-extrabold text-ink shadow-sm backdrop-blur disabled:cursor-not-allowed disabled:opacity-60", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var6...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -150,7 +150,7 @@ func Button(variant string, class string, attrs templ.Attributes) templ.Componen
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "ghost" {
-			var templ_7745c5c3_Var8 = []any{"btn btn-ghost", class}
+			var templ_7745c5c3_Var8 = []any{"inline-flex items-center justify-center rounded-xl px-5 py-3 font-extrabold text-ink/70 transition hover:bg-white/70 hover:text-ink disabled:cursor-not-allowed disabled:opacity-60", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var8...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -189,7 +189,7 @@ func Button(variant string, class string, attrs templ.Attributes) templ.Componen
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "neutral" {
-			var templ_7745c5c3_Var10 = []any{"btn btn-neutral", class}
+			var templ_7745c5c3_Var10 = []any{"cute-button inline-flex items-center justify-center rounded-xl bg-ink/80 px-5 py-3 font-extrabold text-white shadow-sm disabled:cursor-not-allowed disabled:opacity-60", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var10...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -254,7 +254,7 @@ func Input(inputType string, class string, attrs templ.Attributes) templ.Compone
 			templ_7745c5c3_Var12 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var13 = []any{"input input-bordered w-full", class}
+		var templ_7745c5c3_Var13 = []any{"w-full rounded-xl border border-sui/40 bg-white/80 px-5 py-4 text-ink outline-none transition placeholder:text-ink/35 focus:border-lagoon focus:ring-4 focus:ring-sui/30", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var13...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -323,7 +323,7 @@ func Card(class string) templ.Component {
 			templ_7745c5c3_Var16 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var17 = []any{"card bg-base-100 shadow-xl", class}
+		var templ_7745c5c3_Var17 = []any{"glass-card rounded-2xl", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var17...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -378,7 +378,7 @@ func CardHeader(class string) templ.Component {
 			templ_7745c5c3_Var19 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var20 = []any{"card-body", class}
+		var templ_7745c5c3_Var20 = []any{"p-6 sm:p-8", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var20...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -433,7 +433,7 @@ func CardTitle(class string) templ.Component {
 			templ_7745c5c3_Var22 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var23 = []any{"card-title", class}
+		var templ_7745c5c3_Var23 = []any{"font-display text-2xl font-bold text-ink", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var23...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -488,7 +488,7 @@ func CardDescription(class string) templ.Component {
 			templ_7745c5c3_Var25 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var26 = []any{"text-base-content/70", class}
+		var templ_7745c5c3_Var26 = []any{"text-ink/68", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var26...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -543,7 +543,7 @@ func CardContent(class string) templ.Component {
 			templ_7745c5c3_Var28 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var29 = []any{"card-body pt-0", class}
+		var templ_7745c5c3_Var29 = []any{"px-6 pb-6 sm:px-8 sm:pb-8", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var29...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -600,7 +600,7 @@ func Badge(variant string, class string) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if variant == "primary" || variant == "" {
-			var templ_7745c5c3_Var32 = []any{"badge badge-primary", class}
+			var templ_7745c5c3_Var32 = []any{"inline-flex items-center rounded-lg bg-lagoon px-3 py-1 text-xs font-extrabold text-white", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var32...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -631,7 +631,7 @@ func Badge(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "secondary" {
-			var templ_7745c5c3_Var34 = []any{"badge badge-secondary", class}
+			var templ_7745c5c3_Var34 = []any{"inline-flex items-center rounded-lg bg-coral/20 px-3 py-1 text-xs font-extrabold text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var34...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -662,7 +662,7 @@ func Badge(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "outline" {
-			var templ_7745c5c3_Var36 = []any{"badge badge-outline", class}
+			var templ_7745c5c3_Var36 = []any{"inline-flex items-center rounded-lg border border-sui/50 bg-white/60 px-3 py-1 text-xs font-extrabold text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var36...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -693,7 +693,7 @@ func Badge(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "success" {
-			var templ_7745c5c3_Var38 = []any{"badge badge-success", class}
+			var templ_7745c5c3_Var38 = []any{"inline-flex items-center rounded-lg bg-reef/25 px-3 py-1 text-xs font-extrabold text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var38...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -724,7 +724,7 @@ func Badge(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "error" {
-			var templ_7745c5c3_Var40 = []any{"badge badge-error", class}
+			var templ_7745c5c3_Var40 = []any{"inline-flex items-center rounded-lg bg-coral/25 px-3 py-1 text-xs font-extrabold text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var40...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -755,7 +755,7 @@ func Badge(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "warning" {
-			var templ_7745c5c3_Var42 = []any{"badge badge-warning", class}
+			var templ_7745c5c3_Var42 = []any{"inline-flex items-center rounded-lg bg-amber-200/70 px-3 py-1 text-xs font-extrabold text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var42...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -786,7 +786,7 @@ func Badge(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "info" {
-			var templ_7745c5c3_Var44 = []any{"badge badge-info", class}
+			var templ_7745c5c3_Var44 = []any{"inline-flex items-center rounded-lg bg-sui/35 px-3 py-1 text-xs font-extrabold text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var44...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -844,7 +844,7 @@ func Alert(variant string, class string) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if variant == "info" || variant == "" {
-			var templ_7745c5c3_Var47 = []any{"alert alert-info", class}
+			var templ_7745c5c3_Var47 = []any{"rounded-xl border border-sui/40 bg-sui/15 p-4 text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var47...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -875,7 +875,7 @@ func Alert(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "success" {
-			var templ_7745c5c3_Var49 = []any{"alert alert-success", class}
+			var templ_7745c5c3_Var49 = []any{"rounded-xl border border-reef/40 bg-reef/15 p-4 text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var49...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -906,7 +906,7 @@ func Alert(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "warning" {
-			var templ_7745c5c3_Var51 = []any{"alert alert-warning", class}
+			var templ_7745c5c3_Var51 = []any{"rounded-xl border border-amber-300/60 bg-amber-100/60 p-4 text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var51...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -937,7 +937,7 @@ func Alert(variant string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if variant == "error" {
-			var templ_7745c5c3_Var53 = []any{"alert alert-error", class}
+			var templ_7745c5c3_Var53 = []any{"rounded-xl border border-coral/50 bg-coral/15 p-4 text-ink", class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var53...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -994,7 +994,7 @@ func CodeBlock(language string, class string) templ.Component {
 			templ_7745c5c3_Var55 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var56 = []any{"mockup-code", class}
+		var templ_7745c5c3_Var56 = []any{"overflow-hidden rounded-xl border border-sui/30 bg-slate-950 text-slate-100 shadow-inner", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var56...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -1017,7 +1017,7 @@ func CodeBlock(language string, class string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if language != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, "<pre>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, "<pre class=\"max-h-[72vh] overflow-auto p-5 text-sm leading-7\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -1052,7 +1052,7 @@ func CodeBlock(language string, class string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 79, "<pre><code>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 79, "<pre class=\"max-h-[72vh] overflow-auto p-5 text-sm leading-7\"><code>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -1095,7 +1095,7 @@ func MediaDisplay(contentType string, blobID string, class string) templ.Compone
 			templ_7745c5c3_Var60 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var61 = []any{"flex justify-center items-center p-6", class}
+		var templ_7745c5c3_Var61 = []any{"flex items-center justify-center rounded-xl bg-white/60 p-4", class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var61...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -1132,7 +1132,7 @@ func MediaDisplay(contentType string, blobID string, class string) templ.Compone
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 85, "\" class=\"w-full h-full min-h-[60vh] border rounded-lg\" title=\"SVG Content\"></iframe></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 85, "\" class=\"h-full min-h-[60vh] w-full rounded-xl border border-sui/30 bg-white\" title=\"SVG Content\"></iframe></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1150,20 +1150,20 @@ func MediaDisplay(contentType string, blobID string, class string) templ.Compone
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 87, "\" alt=\"Image content\" class=\"max-w-full max-h-full rounded-lg shadow-lg object-contain\" style=\"max-height: 80vh;\" loading=\"lazy\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 87, "\" alt=\"Image content\" class=\"max-h-full max-w-full rounded-xl object-contain shadow-[0_16px_40px_rgba(34,50,72,0.12)]\" style=\"max-height: 80vh;\" loading=\"lazy\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		} else if strings.HasPrefix(contentType, "video/") {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 88, "<video controls class=\"max-w-full rounded-lg shadow-lg\" style=\"max-height: 70vh;\"><source src=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 88, "<video controls class=\"h-auto max-h-[76vh] w-full rounded-xl object-contain shadow-[0_16px_40px_rgba(34,50,72,0.12)]\"><source src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var65 string
 			templ_7745c5c3_Var65, templ_7745c5c3_Err = templ.JoinStringErrs("/api/blob/" + blobID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 177, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 176, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var65))
 			if templ_7745c5c3_Err != nil {
@@ -1176,7 +1176,7 @@ func MediaDisplay(contentType string, blobID string, class string) templ.Compone
 			var templ_7745c5c3_Var66 string
 			templ_7745c5c3_Var66, templ_7745c5c3_Err = templ.JoinStringErrs(contentType)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 177, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 176, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var66))
 			if templ_7745c5c3_Err != nil {
@@ -1187,14 +1187,14 @@ func MediaDisplay(contentType string, blobID string, class string) templ.Compone
 				return templ_7745c5c3_Err
 			}
 		} else if strings.HasPrefix(contentType, "audio/") {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 91, "<div class=\"w-full max-w-2xl\"><audio controls class=\"w-full\"><source src=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 91, "<div class=\"w-full max-w-2xl rounded-xl border border-sui/30 bg-white/80 p-6\"><audio controls class=\"w-full\"><source src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var67 string
 			templ_7745c5c3_Var67, templ_7745c5c3_Err = templ.JoinStringErrs("/api/blob/" + blobID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 186, Col: 40}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 185, Col: 40}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var67))
 			if templ_7745c5c3_Err != nil {
@@ -1207,7 +1207,7 @@ func MediaDisplay(contentType string, blobID string, class string) templ.Compone
 			var templ_7745c5c3_Var68 string
 			templ_7745c5c3_Var68, templ_7745c5c3_Err = templ.JoinStringErrs(contentType)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 186, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 185, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var68))
 			if templ_7745c5c3_Err != nil {
@@ -1225,31 +1225,31 @@ func MediaDisplay(contentType string, blobID string, class string) templ.Compone
 			var templ_7745c5c3_Var69 string
 			templ_7745c5c3_Var69, templ_7745c5c3_Err = templ.JoinStringErrs("/api/blob/" + blobID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 193, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 192, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var69))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 95, "\" class=\"w-full h-full min-h-[70vh] border rounded-lg\" title=\"PDF Content\"></iframe></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 95, "\" class=\"h-full min-h-[70vh] w-full rounded-xl border border-sui/30 bg-white\" title=\"PDF Content\"></iframe></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 96, "<div class=\"alert alert-info\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"stroke-current shrink-0 h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg><div><h3 class=\"font-bold\">Media file detected</h3><div class=\"text-xs\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 96, "<div class=\"flex items-start gap-3 rounded-xl border border-sui/40 bg-sui/15 p-4 text-ink\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 shrink-0 text-lagoon\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg><div><h3 class=\"font-display text-lg font-bold\">Media file detected</h3><div class=\"text-sm text-ink/64\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var70 string
 			templ_7745c5c3_Var70, templ_7745c5c3_Err = templ.JoinStringErrs(contentType)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 205, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/webui/templates/components.templ`, Line: 204, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var70))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 97, " - Use download button to view this file</div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 97, " - use download to open it with a local app.</div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
